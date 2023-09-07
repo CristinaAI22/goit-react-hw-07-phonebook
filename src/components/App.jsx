@@ -1,16 +1,13 @@
+import css from './App.module.css';
+import { AddContact } from './addContact/AddContact';
+import { ContactList } from './contactList/ContactList';
+
 export const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
+    <div className={css.container}>
+      <h1 className={css.title}>Phonebook</h1>
+      <AddContact />
+      <ContactList />
     </div>
   );
 };
