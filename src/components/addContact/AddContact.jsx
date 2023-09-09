@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 import css from './AddContact.module.css';
+import { selectContacts } from 'redux/selectors';
 
 export const AddContact = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(selectContacts);
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setphone] = useState('');
   const [nameError, setNameError] = useState('');
-  const [numberError, setNumberError] = useState('');
+  const [phoneError, setphoneError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [contactExistsMessage, setContactExistsMessage] = useState('');
 
   const handleFormSubmit = e => {
     e.preventDefault();
-
     setNameError('');
-    setNumberError('');
+    setphoneError('');
     setContactExistsMessage('');
 
     const validateName = /^[a-zA-Z]+(([' -][a-zA-Z ])?[a-zA-Z]*)*$/.test(name);
-    const validateNumber =
+    const validatephone =
       /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/.test(
-        number
+        phone
       );
 
     if (!validateName) {
@@ -31,8 +31,8 @@ export const AddContact = () => {
       return;
     }
 
-    if (!validateNumber) {
-      setNumberError('Please enter a valid phone number.');
+    if (!validatephone) {
+      setphoneError('Please enter a valid phone phone.');
       return;
     }
     const isContactExists = contacts.some(
@@ -46,15 +46,14 @@ export const AddContact = () => {
       }, 2000);
       return;
     }
-
-    dispatch(addContact(name, number));
+    dispatch(addContact({ name, phone }));
 
     setSuccessMessage('Contact added successfully.');
     setTimeout(() => {
       setSuccessMessage('');
     }, 2000);
     setName('');
-    setNumber('');
+    setphone('');
   };
 
   return (
@@ -75,12 +74,12 @@ export const AddContact = () => {
           Phone number:
           <input
             type="tel"
-            name="number"
-            value={number}
-            onChange={e => setNumber(e.target.value)}
+            name="phone"
+            value={phone}
+            onChange={e => setphone(e.target.value)}
             required
           />
-          {numberError && <p className={css.error}>{numberError}</p>}
+          {phoneError && <p className={css.error}>{phoneError}</p>}
         </label>
         <button type="submit">Add Contact</button>
       </form>
